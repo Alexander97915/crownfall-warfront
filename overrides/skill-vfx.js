@@ -15,14 +15,16 @@ const HERO_SKILL_MOTIFS=[
 ];
 const POSITIVE_MOTIFS=new Set(['aura','heal','shield','matrix','moon','scales','veil','totem']);
 // Each transparent 2×2 sheet holds the combat signature for four consecutive heroes.
-const HERO_VFX_SHEETS=Array.from({length:10},(_,i)=>{
-  const image=new Image();image.src=`assets/skill-vfx-sheets/signatures-${String(i).padStart(2,'0')}.webp`;return image;
-});
-const ULTIMATE_VFX_SHEETS={
-  9:Object.assign(new Image(),{src:'assets/skill-vfx-sheets/laguna-impact.webp'}),
-  27:Object.assign(new Image(),{src:'assets/skill-vfx-sheets/chronosphere-field.webp'})
-};
+const HERO_VFX_SHEETS=Array.from({length:10},()=>new Image());
+const ULTIMATE_VFX_SHEETS={9:new Image(),27:new Image()};
+function preloadHeroVfx(id){
+  const index=Math.floor(id/4),sheet=HERO_VFX_SHEETS[index];
+  if(!sheet.src)sheet.src=`assets/skill-vfx-sheets/signatures-${String(index).padStart(2,'0')}.webp`;
+  const ultimate=ULTIMATE_VFX_SHEETS[id];
+  if(ultimate&&!ultimate.src)ultimate.src='assets/skill-vfx-sheets/'+(id===9?'laguna-impact':'chronosphere-field')+'.webp';
+}
 function drawPaintedSkillVfx(ctx,e,t){
+  preloadHeroVfx(e.hero);
   const sheet=HERO_VFX_SHEETS[Math.floor(e.hero/4)];
   if(sheet?.complete&&sheet.naturalWidth){
     const cell=e.hero%4,scale=e.source?.95:1.07,diameter=e.r*scale*(1.05+t*.35);

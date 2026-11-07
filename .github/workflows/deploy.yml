@@ -40,6 +40,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/site/assets/skill-vfx-sheets"
           cp signatures-*.webp laguna-impact.webp chronosphere-field.webp "$RUNNER_TEMP/site/assets/skill-vfx-sheets/"
           cp overrides/skill-vfx.js "$RUNNER_TEMP/site/skill-vfx.js"
+          cp overrides/game.js "$RUNNER_TEMP/site/game.js"
           test -f "$RUNNER_TEMP/site/index.html"
       - name: Configure Pages
         uses: actions/configure-pages@v5
