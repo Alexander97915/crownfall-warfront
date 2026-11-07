@@ -1,8 +1,12 @@
 name: Deploy Crownfall to GitHub Pages
 
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
+    paths:
+      - '*.webp'
+      - 'overrides/**'
+      - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
 permissions:
@@ -21,16 +25,18 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Check out deployment workflow
+      - name: Check out deployment workflow and new art
         uses: actions/checkout@v4
-      - name: Download latest game package
+      - name: Download base game package
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release download --repo "${{ github.repository }}" --pattern crownfall-site-v1.tar.gz --dir "$RUNNER_TEMP"
-      - name: Extract static site
+      - name: Extract base and apply painted art
         run: |
-          mkdir -p "$RUNNER_TEMP/site"
+          mkdir -p "$RUNNER_TEMP/site/assets/skill-extra-sheets"
           tar -xzf "$RUNNER_TEMP/crownfall-site-v1.tar.gz" -C "$RUNNER_TEMP/site"
+          cp lina-laguna-blade-0.webp faceless-chronosphere-0.webp "$RUNNER_TEMP/site/assets/skill-extra-sheets/"
+          python overrides/painted_ultimates.py "$RUNNER_TEMP/site"
           test -f "$RUNNER_TEMP/site/index.html"
       - name: Configure Pages
         uses: actions/configure-pages@v5
