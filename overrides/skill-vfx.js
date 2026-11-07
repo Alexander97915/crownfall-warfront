@@ -25,9 +25,9 @@ const ULTIMATE_VFX_SHEETS={
 function drawPaintedSkillVfx(ctx,e,t){
   const sheet=HERO_VFX_SHEETS[Math.floor(e.hero/4)];
   if(sheet?.complete&&sheet.naturalWidth){
-    const cell=e.hero%4,scale=e.source?1.15:1.25,diameter=e.r*scale*(1.05+t*.45);
+    const cell=e.hero%4,scale=e.source?.95:1.07,diameter=e.r*scale*(1.05+t*.35);
     ctx.save();ctx.translate(e.x,e.y);ctx.globalCompositeOperation='screen';
-    ctx.globalAlpha=Math.min(1,(e.source?.68:.86)*(1-t)*2.1);
+    ctx.globalAlpha=Math.min(1,(e.source?.34:.48)*(1-t)*1.8);
     ctx.rotate((e.source?-.13:.09)*Math.sin(t*5+e.index));
     ctx.drawImage(sheet,(cell%2)*512,Math.floor(cell/2)*512,512,512,-diameter,-diameter,diameter*2,diameter*2);
     ctx.restore();
