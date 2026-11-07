@@ -37,6 +37,9 @@ jobs:
           tar -xzf "$RUNNER_TEMP/crownfall-site-v1.tar.gz" -C "$RUNNER_TEMP/site"
           cp lina-laguna-blade-0.webp faceless-chronosphere-0.webp "$RUNNER_TEMP/site/assets/skill-extra-sheets/"
           python overrides/painted_ultimates.py "$RUNNER_TEMP/site"
+          mkdir -p "$RUNNER_TEMP/site/assets/skill-vfx-sheets"
+          cp signatures-*.webp laguna-impact.webp chronosphere-field.webp "$RUNNER_TEMP/site/assets/skill-vfx-sheets/"
+          cp overrides/skill-vfx.js "$RUNNER_TEMP/site/skill-vfx.js"
           test -f "$RUNNER_TEMP/site/index.html"
       - name: Configure Pages
         uses: actions/configure-pages@v5
